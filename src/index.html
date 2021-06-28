@@ -82,7 +82,7 @@ permalink:
 <body>
     {% assign inputType = 'text' %}
     {% if eleventy.serverless.query.inputType %}
-    {% assign inputType = eleventy.serverless.query.inputType %}
+    {% assign inputType = eleventy.serverless.query.inputType | escape %}
     {% endif %}
 
     {% if inputType == 'color' %}
@@ -90,9 +90,9 @@ permalink:
     {% else %}
     {% assign otherInputType = 'color' %}
     {% endif %}
-    
-    {% assign color1 = eleventy.serverless.query.color1 %}
-    {% assign color2 = eleventy.serverless.query.color2 %}
+
+    {% assign color1 = eleventy.serverless.query.color1 | escape %}
+    {% assign color2 = eleventy.serverless.query.color2 | escape %}
     {% assign ratio = color1 | contrastRatioAgainst: color2 %}
 
     <h1>Colour contrast checker</h1>
