@@ -80,12 +80,17 @@ permalink:
 </head>
 
 <body>
+    {% assign inputType = 'text' %}
+    {% if eleventy.serverless.query.inputType %}
     {% assign inputType = eleventy.serverless.query.inputType %}
+    {% endif %}
+
     {% if inputType == 'color' %}
     {% assign otherInputType = 'text' %}
     {% else %}
     {% assign otherInputType = 'color' %}
     {% endif %}
+    
     {% assign color1 = eleventy.serverless.query.color1 %}
     {% assign color2 = eleventy.serverless.query.color2 %}
     {% assign ratio = color1 | contrastRatioAgainst: color2 %}
@@ -102,7 +107,7 @@ permalink:
             {% if inputType == 'text' %}
             <p>Type in hex values (starting with #) or a named CSS color.</p>
             {% else %}
-            <p>Choose colurs using the inputs below.</p>
+            <p>Choose colors using the inputs below.</p>
             {% endif %}
             <form method="get">
                 <p><span class="color-block" style="background-color: {{color1}}"></span></p>
