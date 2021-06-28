@@ -1,0 +1,7 @@
+.env
+_site/
+node_modules/
+.cache
+.DS_Store
+netlify/functions/ondemand/*
+!netlify/functions/ondemand/index.js

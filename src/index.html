@@ -1,0 +1,172 @@
+---
+permalink:
+ondemand: '/'
+---
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colour contrast checker</title>
+    <style>
+        body {
+            max-width: 60em;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.25;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        section {
+            padding: 1rem;
+            border: 1px solid black;
+            margin: 1rem;
+            flex: 1 1 30em;
+        }
+
+        section > :first-child {
+            margin-top: 0;
+        }
+
+        section.skinny {
+            flex-basis: 10em;
+        }
+
+        .color-block {
+            height: 50px;
+            width: 50px;
+            display: inline-block;
+            border: 1px solid black;
+        }
+
+        .text-example {
+            padding: 1rem;
+            border: 1px solid black;
+        }
+
+        .wcag-table {
+            border-collapse: collapse;
+        }
+
+        .wcag-table th,
+        .wcag-table td {
+            padding: 1rem;
+            border: 1px solid black;
+        }
+
+        .pass {
+            background-color: lightgreen;
+        }
+
+        .fail {
+            background-color: lightcoral;
+        }
+
+        label,
+        button,
+        input {
+            display: block;
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    {% assign inputType = eleventy.serverless.query.inputType %}
+    {% if inputType == 'color' %}
+    {% assign otherInputType = 'text' %}
+    {% else %}
+    {% assign otherInputType = 'color' %}
+    {% endif %}
+    {% assign color1 = eleventy.serverless.query.color1 %}
+    {% assign color2 = eleventy.serverless.query.color2 %}
+    {% assign ratio = color1 | contrastRatioAgainst: color2 %}
+
+    <h1>Colour contrast checker</h1>
+    <p>This was made using <a href="https://www.11ty.dev/docs/plugins/serverless/">Eleventy's new Serverless
+            functions</a>, inspired by <a href="https://www.youtube.com/watch?v=wneO9XKkGTA">Ben Myers' demo</a>.</p>
+
+    <div class="flex-container">
+        <section class="skinny">
+            <h2>Choose your colors</h2>
+            <form method="get">
+                <p><span class="color-block" style="background-color: {{color1}}"></span></p>
+
+                <label for="color1-input">Color 1:</label>
+                <input type="{{inputType}}" name="color1" id="color1-input" value="{{color1}}" />
+
+                <p><span class="color-block" style="background-color: {{color2}}"></span></p>
+                <label for="color2-input">Color 2:</label>
+                <input type="{{inputType}}" name="color2" id="color2-input" value="{{color2}}" />
+
+                <button>Submit</button>
+                <button name="inputType" value="{{otherInputType}}">Use {{otherInputType}} inputs instead</button>
+
+            </form>
+        </section>
+
+        <section>
+            <h2>Example text</h2>
+            <h3 class="text-example" style="background-color: {{color1}}; color: {{color2}};">Example heading for large,
+                bold text</h3>
+
+            <h3 class="text-example" style="background-color: {{color2}}; color: {{color1}};">Example heading for large,
+                bold text</h3>
+
+            <p class="text-example" style="background-color: {{color1}}; color: {{color2}};">Lorem ipsum, dolor sit amet
+                consectetur adipisicing elit.</p>
+
+            <p class="text-example" style="background-color: {{color2}}; color: {{color1}};">Lorem ipsum, dolor sit amet
+                consectetur adipisicing elit. Ab beatae corporis, corrupti voluptatibus</p>
+        </section>
+
+        <section>
+            <h2>Are these colours accessible?</h2>
+            <p>The two colours have a contrast ratio of <strong style="font-size: larger">{{ratio}}:1</strong></p>
+
+            <p>The table below shows whether the ratio is high enough for the Web Content Accessibility Guidelines:</p>
+
+            <table class="wcag-table">
+                <thead>
+                    <tr>
+                        <th>Text size</th>
+                        <th>Pass Level AA?</th>
+                        <th>Pass Level AAA?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Body text</th>
+                        <td class="{% if ratio > 4.5 %}pass{% else %}fail{% endif %}">{% if ratio > 4.5 %}Yes{% else
+                            %}No{% endif %} (<a
+                                href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html">must be at
+                                least 4.5:1</a>)</td>
+                        <td class="{% if ratio > 7 %}pass{% else %}fail{% endif %}">{% if ratio > 7 %}Yes{% else %}No {%
+                            endif %} (<a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-enhanced">must be at
+                                least 7.0:1</a>)</td>
+                    </tr>
+                    <tr>
+                        <th>Large, bold text</th>
+                        <td class="{% if ratio > 3 %}pass{% else %}fail{% endif %}">{% if ratio > 3 %}Yes {% else %}No{%
+                            endif %} (<a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html">must
+                                be at least 3.0:1</a>)</td>
+                        <td class="{% if ratio > 4.5 %}pass{% else %}fail{% endif %}">{% if ratio > 4.5 %}Yes{% else
+                            %}No{% endif %} (<a
+                                href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-enhanced">must be at least
+                                4.5:1</a>)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+
+</html>
