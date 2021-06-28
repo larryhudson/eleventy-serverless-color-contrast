@@ -9,7 +9,7 @@ permalink:
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colour contrast checker</title>
+    <title>Color contrast checker</title>
     <style>
         body {
             max-width: 60em;
@@ -90,7 +90,7 @@ permalink:
     {% assign color2 = eleventy.serverless.query.color2 %}
     {% assign ratio = color1 | contrastRatioAgainst: color2 %}
 
-    <h1>Colour contrast checker</h1>
+    <h1>color contrast checker</h1>
     <p>This was made using <a href="https://www.11ty.dev/docs/plugins/serverless/">Eleventy's new Serverless
             functions</a>, inspired by <a href="https://www.youtube.com/watch?v=wneO9XKkGTA">Ben Myers' demo</a>.</p>
 
@@ -99,6 +99,11 @@ permalink:
     <div class="flex-container">
         <section class="skinny">
             <h2>Choose your colors</h2>
+            {% if inputType == 'text'}
+            <p>Type in hex values (starting with #) or a named CSS color.</p>
+            {% else %}
+            <p>Choose colurs using the inputs below.</p>
+            {% endif %}
             <form method="get">
                 <p><span class="color-block" style="background-color: {{color1}}"></span></p>
 
@@ -131,8 +136,8 @@ permalink:
         </section>
 
         <section>
-            <h2>Are these colours accessible?</h2>
-            <p>The two colours have a contrast ratio of <strong style="font-size: larger">{{ratio}}:1</strong></p>
+            <h2>Are these colors accessible?</h2>
+            <p>The two colors have a contrast ratio of <strong style="font-size: larger">{{ratio}}:1</strong></p>
 
             <p>The table below shows whether the ratio is high enough for the Web Content Accessibility Guidelines:</p>
 
