@@ -90,7 +90,7 @@ permalink:
     {% assign color2 = eleventy.serverless.query.color2 %}
     {% assign ratio = color1 | contrastRatioAgainst: color2 %}
 
-    <h1>color contrast checker</h1>
+    <h1>Colour contrast checker</h1>
     <p>This was made using <a href="https://www.11ty.dev/docs/plugins/serverless/">Eleventy's new Serverless
             functions</a>, inspired by <a href="https://www.youtube.com/watch?v=wneO9XKkGTA">Ben Myers' demo</a>.</p>
 
@@ -99,7 +99,7 @@ permalink:
     <div class="flex-container">
         <section class="skinny">
             <h2>Choose your colors</h2>
-            {% if inputType == 'text'}
+            {% if inputType == 'text' %}
             <p>Type in hex values (starting with #) or a named CSS color.</p>
             {% else %}
             <p>Choose colurs using the inputs below.</p>
